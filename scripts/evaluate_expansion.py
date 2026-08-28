@@ -272,6 +272,37 @@ def main():
     if os.path.exists(args.sentiment):
         with open(args.sentiment, "r") as f:
             sentiment_data = json.load(f)
+    else:
+        # Fallback: attempt to load .env manually to avoid python-dotenv dependency
+        env_vars = {}
+        if os.path.exists(".env"):
+            with open(".env", "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        key, val = line.split("=", 1)
+                        env_vars[key.strip()] = val.strip()
+        
+        apify_token = os.environ.get("APIFY_TOKEN") or env_vars.get("APIFY_TOKEN")
+        dataset_url = "https://api.apify.com/v2/datasets/sample-gtm-coffee-de/items?format=json" # Example dataset
+        
+        if apify_token:
+            print(f"⚠️ Local sentiment file '{args.sentiment}' missing. Attempting live Apify fetch...")
+            import urllib.request
+            try:
+                req = urllib.request.Request(f"{dataset_url}&token={apify_token}")
+                with urllib.request.urlopen(req) as response:
+                    # Apify items endpoints return a list, our script expects a dict.
+                    # We map the first item or wrap it depending on the dataset structure.
+                    raw_data = json.loads(response.read().decode())
+                    if isinstance(raw_data, list) and len(raw_data) > 0:
+                        sentiment_data = raw_data[0]
+                    else:
+                        sentiment_data = raw_data
+            except Exception as e:
+                print(f"❌ Live Apify fetch failed: {e}")
+        else:
+            print(f"⚠️ Local sentiment file '{args.sentiment}' missing and no APIFY_TOKEN found in environment or .env. Using empty sentiment baseline.")
 
     econ_engine = EconomicsEngine()
     comp_engine = ComplianceEngine()
