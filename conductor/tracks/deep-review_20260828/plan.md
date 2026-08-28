@@ -10,15 +10,15 @@
   - [x] Verify `demo/seed-prompt.md` exists, is accurate, and names the input path correctly.
   - [x] Verify `DEMO.md` and `demo/evals.md` are completely filled and accurately reflect the current state.
   - [x] Apply immediate fixes for any identified documentation or structural gaps.
-- [x] Task: Phase Verification - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md) Checkpoint [checkpoint: 5244626]
+- [x] Task: Phase Verification - [x] Task: Phase Verification & Checkpoint [checkpoint: 683ee80] Checkpoint [checkpoint: 5244626]
 
 ## Phase 2: Input Diversity & Test Cases
-- [ ] Task: Evaluate Existing Inputs
-  - [ ] Review current inputs in `demo/input/examples/` for diversity across product categories and target countries.
-  - [ ] Identify any missing edge cases or representation gaps (e.g., highly restricted products vs. unrestricted).
-- [ ] Task: Expand Test Suite
-  - [ ] Create or update representative inputs to ensure broad, rigorous coverage.
-  - [ ] Verify that the fallback output (`demo/output/`) aligns perfectly with the latest script logic.
+- [x] Task: Evaluate Existing Inputs
+  - [x] Review current inputs in `demo/input/examples/` for diversity across product categories and target countries.
+  - [x] Identify any missing edge cases or representation gaps (e.g., highly restricted products vs. unrestricted).
+- [x] Task: Expand Test Suite
+  - [x] Create or update representative inputs to ensure broad, rigorous coverage.
+  - [x] Verify that the fallback output (`demo/output/`) aligns perfectly with the latest script logic.
 - [x] Task: Phase Verification - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md) Checkpoint [checkpoint: 5244626]
 
 ## Phase 3: Cold Environment Execution

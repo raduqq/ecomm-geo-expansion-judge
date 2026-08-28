@@ -27,7 +27,7 @@ The organizer presents this repository for you, in 2 minutes, without having see
 
 **Evidence:** Competitor price benchmarks cite real German store URLs (Amazon.de, The Barn Berlin, Coffee Circle); regulatory checks cite official BfR and LUCID registries; community signals cite Apify Reddit scrape run timestamp (`2026-08-28T17:45:00Z`).
 
-**Fallback output was produced:** 2026-08-28 19:19:41 UTC via `$geo-expansion-judge` CLI engine.
+**Fallback output was produced:** 2026-08-28 19:41:25 UTC via `$geo-expansion-judge` CLI engine.
 
 ## Evals — 10 seconds
 

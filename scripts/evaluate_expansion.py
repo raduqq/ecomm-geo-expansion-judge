@@ -103,7 +103,7 @@ def generate_markdown_brief(request: Dict[str, Any], econ: Dict[str, Any], comp:
     doc = f"""# Expansion Viability Decision Brief: {brand}
 
 **Product:** {product_name}  
-**Expansion Corridor:** `{origin}` (Romania) -> `{target}` ({target_name})  
+**Expansion Corridor:** `{origin}` -> `{target}` ({target_name})  
 **Evaluation Timestamp:** {now_iso}  
 **Execution Engine:** `$geo-expansion-judge` (Codex Native Runtime)
 
