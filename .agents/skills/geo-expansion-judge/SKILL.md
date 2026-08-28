@@ -19,7 +19,7 @@ The skill accepts a structured JSON expansion request profile (default: `demo/in
 - `local_competitor_benchmarks`: List of local competitor products with verified retail prices, seller names, and source URLs.
 
 Supporting inputs:
-- `APIFY_TOKEN`: Environment variable (via `.env` or system) to authenticate live data extraction from Apify Reddit Scraper.
+- `APIFY_TOKEN`: Environment variable (via `.env` or system) to authenticate live data extraction (falls back to local data if missing).
 - `scripts/data/country_baselines.json`: 38+ pre-computed country tax (VAT/OSS), packaging act (EPR/VerpackG), and compliance standards.
 
 ## Output Contract
@@ -61,7 +61,7 @@ The skill writes an **Expansion Viability Decision Brief** to `demo/output/expan
 - **Never Fabricate Sources:** Every competitor price, VAT rate, and regulatory law MUST cite a real URL and retrieval timestamp.
 - **Never Skip Compliance / Kill Triggers:** Prohibited substances or negative landed margins must trigger an immediate `NO_GO`.
 - **Refusal over Hallucination:** If essential specs or country data cannot be resolved, emit `INSUFFICIENT_EVIDENCE`.
-- **Live Data Requirement:** Requires `APIFY_TOKEN` configured in `.env` or system environment for real-time Apify data extraction.
+- **Live Data Requirement:** Uses `APIFY_TOKEN` configured in `.env` for real-time extraction, but gracefully falls back to committed local snapshot data in `demo/input/` when API keys are absent (Codex execution environment).
 
 ## Done When
 
