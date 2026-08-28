@@ -2,7 +2,7 @@
 
 **Product:** Carpathian Artisan Ceramic Pour-Over Coffee Kit  
 **Expansion Corridor:** `RO` -> `DE` (Germany)  
-**Evaluation Timestamp:** 2026-08-28 20:03:53 UTC  
+**Evaluation Timestamp:** 2026-08-28 19:56:27 UTC  
 **Execution Engine:** `$geo-expansion-judge` (Codex Native Runtime)
 
 ---

@@ -189,7 +189,7 @@ def generate_markdown_brief(request: Dict[str, Any], econ: Dict[str, Any], comp:
 | **Minimum Landed Gross Margin** | Margin >= 20.0% | **{margin_pct:.1f}%** | No |
 | **Material Safety & FCM Certification** | No toxic/lead materials; DoC available | **Compliant** (Ceramic + Borosilicate) | No |
 | **Negative Sentiment Spike** | Negative discussions < 60% | **{pulse['negative_pct']:.1f}%** | No |
-| **Overall Recommendation** | Viability Score >= 75 | **{score}/100** | **APPROVED (GO)** |
+| **Overall Recommendation** | Viability Score >= 75 | **{score}/100** | **{verdict}** |
 
 ---
 
@@ -269,45 +269,64 @@ def main():
     target_baseline = baselines.get(target_country, baselines.get("GLOBAL_DEFAULT", {}))
 
     sentiment_data = {}
-    if os.path.exists(args.sentiment):
-        with open(args.sentiment, "r") as f:
-            sentiment_data = json.load(f)
-    else:
-        # Fallback: attempt to load .env manually to avoid python-dotenv dependency
-        env_vars = {}
-        if os.path.exists(".env"):
-            with open(".env", "r") as f:
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith("#") and "=" in line:
-                        key, val = line.split("=", 1)
-                        env_vars[key.strip()] = val.strip()
-        
-        apify_token = os.environ.get("APIFY_TOKEN") or env_vars.get("APIFY_TOKEN")
-        dataset_url = "https://api.apify.com/v2/datasets/sample-gtm-coffee-de/items?format=json" # Example dataset
-        
-        if apify_token:
-            print(f"⚠️ Local sentiment file '{args.sentiment}' missing. Attempting live Apify fetch...")
-            import urllib.request
-            try:
-                req = urllib.request.Request(f"{dataset_url}&token={apify_token}")
-                with urllib.request.urlopen(req) as response:
-                    # Apify items endpoints return a list, our script expects a dict.
-                    # We map the first item or wrap it depending on the dataset structure.
-                    raw_data = json.loads(response.read().decode())
-                    if isinstance(raw_data, list) and len(raw_data) > 0:
-                        sentiment_data = raw_data[0]
-                    else:
-                        sentiment_data = raw_data
-            except Exception as e:
-                print(f"❌ Live Apify fetch failed: {e}")
+    
+    # 1. Attempt to resolve APIFY_TOKEN and APIFY_DATASET_URL from environment or .env
+    env_vars = {}
+    if os.path.exists(".env"):
+        with open(".env", "r") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, val = line.split("=", 1)
+                    env_vars[key.strip()] = val.strip()
+                    
+    apify_token = os.environ.get("APIFY_TOKEN") or env_vars.get("APIFY_TOKEN")
+    dataset_url = os.environ.get("APIFY_DATASET_URL") or env_vars.get("APIFY_DATASET_URL") or "https://api.apify.com/v2/datasets/5D93sQcc0Ap1GwJmi/items?format=json"
+
+    # 2. Try Live Fetch First (if token exists)
+    live_fetch_success = False
+    if apify_token:
+        print("📡 Fetching live sentiment data from Apify...")
+        import urllib.request
+        import urllib.error
+        try:
+            req = urllib.request.Request(f"{dataset_url}&token={apify_token}")
+            with urllib.request.urlopen(req) as response:
+                raw_data = json.loads(response.read().decode())
+                if isinstance(raw_data, list) and len(raw_data) > 0:
+                    sentiment_data = raw_data[0]
+                else:
+                    sentiment_data = raw_data
+                live_fetch_success = True
+                print("✅ Successfully retrieved live Apify data.")
+        except urllib.error.HTTPError as e:
+            print(f"⚠️ Live Apify fetch returned HTTP {e.code}. Falling back to local data...")
+        except Exception as e:
+            print(f"⚠️ Live Apify fetch failed ({e}). Falling back to local data...")
+
+    # 3. Fallback to Local Data
+    if not live_fetch_success:
+        if os.path.exists(args.sentiment):
+            print(f"📂 Loading pre-fetched Apify data from {args.sentiment}...")
+            with open(args.sentiment, "r") as f:
+                sentiment_data = json.load(f)
         else:
-            print(f"⚠️ Local sentiment file '{args.sentiment}' missing and no APIFY_TOKEN found in environment or .env. Using empty sentiment baseline.")
+            brief = generate_insufficient_evidence_brief(request, f"Missing Apify data. Live fetch failed and local file '{args.sentiment}' not found.")
+            if args.output:
+                os.makedirs(os.path.dirname(args.output), exist_ok=True)
+                with open(args.output, "w") as f:
+                    f.write(brief)
+            print(brief)
+            import sys
+            sys.exit(0)
 
     econ_engine = EconomicsEngine()
     comp_engine = ComplianceEngine()
     sentiment_engine = SentimentEngine()
     decision_engine = DecisionEngine()
+
+    if "amazon_competitor_pricing" in sentiment_data:
+        request["local_competitor_benchmarks"] = sentiment_data["amazon_competitor_pricing"]
 
     econ_eval = econ_engine.evaluate(request, target_baseline)
     comp_eval = comp_engine.evaluate(request, target_baseline)

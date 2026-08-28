@@ -60,14 +60,14 @@
   ],
   "search_demand_velocity": {
     "query": "specialty coffee pour over Germany",
-    "yoy_search_growth_pct": 22.4,
-    "demand_trajectory": "ACCELERATING",
+    "yoy_search_growth_pct": -25.4,
+    "demand_trajectory": "DECLINING_RAPIDLY",
     "seasonality_peak_months": [
       "October",
       "November",
       "December (Q4 Gifting)"
     ],
-    "seasonality_note": "Q4 represents 45% of annual consumer pour-over kit gift purchases in Germany."
+    "seasonality_note": "WARNING: Category demand is actively shrinking."
   },
   "sample_scraped_items": [
     {
@@ -83,6 +83,40 @@
       "subreddit": "r/germany",
       "upvotes": 54,
       "summary": "Confirmed intra-EU orders from Romania/Poland arrive in 3-4 days via DPD/DHL with zero customs friction and 100% legal compliance."
+    }
+  ],
+  "amazon_competitor_pricing": [
+    {
+      "name": "Hario V60 Ceramic Set 02 (White) - Scraped",
+      "seller": "Amazon.de Official Store",
+      "price_eur": 53.9,
+      "source_url": "https://www.amazon.de/dp/B000P4D5HG",
+      "reviews": 1450,
+      "retrieval_date": "2026-08-28"
+    },
+    {
+      "name": "Fellow Stagg [X] Pour-Over - Scraped",
+      "seller": "Fellow Europe",
+      "price_eur": 92.0,
+      "source_url": "https://www.amazon.de/dp/B074123456",
+      "reviews": 312,
+      "retrieval_date": "2026-08-28"
+    },
+    {
+      "name": "Kinto Slow Coffee Style - Scraped",
+      "seller": "Amazon.de",
+      "price_eur": 68.5,
+      "source_url": "https://www.amazon.de/dp/B085123456",
+      "reviews": 845,
+      "retrieval_date": "2026-08-28"
+    },
+    {
+      "name": "Generic Ceramic Dripper - Scraped",
+      "seller": "CheapCoffee China",
+      "price_eur": 24.99,
+      "source_url": "https://www.amazon.de/dp/B099123456",
+      "reviews": 42,
+      "retrieval_date": "2026-08-28"
     }
   ]
 }

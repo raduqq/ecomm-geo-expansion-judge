@@ -55,8 +55,10 @@ class SentimentEngine:
             velocity_score = 80
         elif growth_pct >= -5.0:
             velocity_score = 65
-        else:
+        elif growth_pct > -20.0:
             velocity_score = 40
+        else:
+            velocity_score = 0  # Severe penalty for collapsing markets
             
         # Composite Multi-Signal Market Pulse Score (0-100)
         pulse_score = int(round((0.50 * sentiment_component) + (0.25 * moat_score) + (0.25 * velocity_score)))
@@ -69,6 +71,12 @@ class SentimentEngine:
             pulse_score = min(pulse_score, 20)
             kill_trigger = True
             kill_reason = f"Severe consumer sentiment hostility detected in target community ({negative_pct:.1f}% negative reactions)."
+            
+        # Option 4: Kill trigger for declining market
+        if growth_pct <= -20.0:
+            pulse_score = min(pulse_score, 20)
+            kill_trigger = True
+            kill_reason = f"Category demand is collapsing (YoY search growth {growth_pct:.1f}%). Expansion unviable." 
 
         return {
             "market_pulse_score": pulse_score,

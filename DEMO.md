@@ -18,12 +18,12 @@ The organizer presents this repository for you, in 2 minutes, without having see
 
 1. Codex is open at the repository root.
 2. Paste [`demo/seed-prompt.md`](demo/seed-prompt.md).
-3. Watch for: Output of the **Expansion Viability Decision Brief** with verdict badge `[ GO ]`, 94/100 score, landed margin breakdown (50.0%), and Apify Reddit community sentiment summary.
+3. Watch for: Output of the **Expansion Viability Decision Brief** with verdict badge `[ NO_GO ]`, 30/100 score, landed margin breakdown (50.0%), and the new collapsing demand kill trigger activating.
 4. If nothing visible after 60 seconds, open the fallback: [`demo/output/expansion_brief.md`](demo/output/expansion_brief.md)
 
 ## Show this — 25 seconds
 
-**Result:** An executive Decision Brief giving founders a clear `GO` verdict, landed unit economics breakdown (€34.50 landed cost vs €69.00 MSRP), LUCID packaging checklist, and Apify consumer purchase drivers.
+**Result:** An executive Decision Brief giving founders a clear `NO_GO` verdict due to collapsing demand (-25.4%), landed unit economics breakdown (€34.50 landed cost vs €69.00 MSRP), LUCID packaging checklist, and Apify consumer purchase drivers.
 
 **Evidence:** Competitor price benchmarks cite real German store URLs (Amazon.de, The Barn Berlin, Coffee Circle); regulatory checks cite official BfR and LUCID registries; community signals cite Apify Reddit scrape run timestamp (`2026-08-28T17:45:00Z`).
 
@@ -33,7 +33,7 @@ The organizer presents this repository for you, in 2 minutes, without having see
 
 | Case | Result | Where |
 | :--- | :--- | :--- |
-| Intended | Passes with `[ GO ]` (94/100 score, 50.0% landed margin, positive sentiment) | [`demo/evals.md`](demo/evals.md) |
+| Intended | Triggers `[ NO_GO ]` (30/100 score, collapsing demand) | [`demo/evals.md`](demo/evals.md) |
 | Insufficient evidence | Passes with `[ INSUFFICIENT_EVIDENCE ]` when specs/COGS are missing | [`demo/evals.md`](demo/evals.md) |
 | Failure / exclusion | Passes with `[ NO_GO ]` and kill trigger on lead glaze chemical hazard | [`demo/evals.md`](demo/evals.md) |
 
